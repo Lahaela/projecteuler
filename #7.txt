@@ -1,0 +1,86 @@
+def isPrime(number):
+    for x in range (2,number):
+        if (number % x == 0):
+            return False
+    return True    
+
+# Current
+first = 2 # start off with 2, good
+count = 0 # count start off 0, good
+while (count < 6): 
+    if (isPrime(first)):
+        count += 1
+            # += doesn't exist...what is it supposed to stand for?
+            # wait it doesn't? it's supposed to be shorthand for count = count + 1
+            # it's that way in every other programming language lol
+            # maybe I just didn't learn it yet? that's good because I use it a lot
+            # i think python has it
+            # but yeah this code actually works
+    first += 1
+print first
+    # I see it now! wow. let's try it
+    # it's because of the last first += statement, you're getting that on 13
+    # two ways to get around it:
+        # you can either print (first-1) instead, this is kind of a cheat
+        # you can change the loop so instead of doing while count, it does while true
+        # and breaks if count == the correc thing.
+        # example below
+        # yeah I get it
+        # I need to work harder on these...I'll email myself #9 so I'm not so bored in APUSH. 
+        # My computer is still doing it, but since it worked for count = 6, 
+        # I think it's just taking a while from...the sheer quantity
+        # alright so there's a little hack that you can do to make it a lot faster!
+        # say that you want to check if 95 is prime right
+        # you hit 5 and realize it isn't
+        # what other number do you not have to check? 
+        # or actually, this function avoids the problem...nvm lol it's your comp
+        # you wouldn't need to check 19 because it's the other factor (19*5 = 95)
+        # How would you put the Sieve of Eratosthenes into a function form?
+        # lol at hashtag vs. double slash
+
+def sieve():
+    numbers = {1,2,3,4,5,6,7,8,9,10} # however it is you declare an array
+    for n in (2,10):
+        for number in numbers:
+            if (number % n == 0):
+                # remove the number from the list/array
+                # how would you remove the number from the array? 
+                # I was wondering about that for a UDAcity problem, too.
+                # depends on the structure you have
+                # array = fixed size, so you end up with a blank space there
+                # better solution is to use a list structure, which has dynamic size
+                # if numbers was a list, then you could do numbers.remove(numbers[index] or something)
+        # at this point you will be left with just the primes in your list
+        # btw did it finish yet
+        # did the prime solver finish yet lol
+        # 104743, yay! I have made Progress!
+        # haha, I'm going to be seeing Jordan again Thursday. It really isn't fair
+        # I ate with him at the Berkeley debate tournament, & I have another field trip Thurs
+        # GO DO MORE EULER
+        # ok i should really finish my CS assignment lol...been helping u + robert with CS
+        # back to teh gchats
+        # you should save this stypi on your hard drive somewhere
+        # in a text file as reference if you need it
+        # robert? and thanks!
+        # yeah planning on it
+        #practice, practice, practice! I already did Euler #8, heh. Onwards to 9! 
+        # After my HW and whatnot
+        # thanks again!
+while (true):
+        if (isPrime(first)):
+            count += 1
+        if (count == 10001):
+            print first
+            break
+        first +=1
+
+    #for n in range(2, first): 
+        # should be first
+        # but then the range is (2,2) oh wait
+        # yeah it works lol
+        # the better solution is to use the isPrime function that I've written
+        # breaks in Python are messy
+     #   if (first % n == 0):
+     #       break
+     #   count = count + 1
+     #first = first + 1

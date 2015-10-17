@@ -1,0 +1,151 @@
+
+https://projecteuler.net/problem=32
+# keke thanks~
+# ^_^ no problem. thank me if I actually end up helping you :P
+
+def repeatNum(s):
+    d = list(str(s))
+    for i in d:
+        if '0' in d: return False
+        if d.count(i)>1: return False
+    # change for this loop: have a bool variable. can you do that?
+        # I just looked it up and yes I can, although let me look into the documentation. I've never used them before
+    # varName = '0' in d or d.count(i)>1
+    # if varName != true: return varName # MAYBE. Not necessarily faster / legal. just playing around
+    
+    # "Note that in Python, unlike C, assignment cannot occur inside expressions." Errr not sure what this means...
+        # are there any examples?
+        # http://docs.python.org/tutorial/datastructures.html
+            # figured it out. it doesn't matter for you just yet. I'll explain it to you later if you'd like.
+            # I also think i just figured out what you mean, although you're right, not certain if it's helpful
+            # since the whole point of the return statement is to return False the /moment/ we find out it's false
+    return True
+    
+def countR(f1, f2, f3):
+    d2 = list(str(f1)+str(f2)+str(f3))
+    if len(d2)!=9 : return False
+        # what does list do?
+        # List takes item in parentheses and makes it into a list per character, e.g. list('356') == ['3','5','6']
+    d2 = map(int,d2)
+        # this takes every item in the list and string--> integer. I turned #s into strings when concatenating
+            # so 3, 5, 6 becomes 356. ok.
+            # it's more like: ['3','5','6'] --> [3,5,6] so it's comparable to the range(1,10)
+    for i2 in range(1,10):
+        if d2.count(0)!=0 : return False
+        if d2.count(i2)!=1 : return False
+    # varName = d2.count(0)!=0 or d2.count(i2)!=1
+    # if varName != true: return varName # MAYBE. Not necessarily faster / legal. just playing around
+    
+    return True
+
+pancakes = []  
+n = 2
+while n<=987654321: # I know...this number is huge.... # I mean, if anything's the cause of a slowdown... it's this :P
+                    # I can't think of a way of changing it though
+    if repeatNum(n): pancakes.append(n)
+    n+=1
+
+res = []        
+res = [a*b for a in pancakes for b in pancakes if (b>a and (countR(a,b,a*b)) and (a*b not in res))]
+print 'Sum: ', sum(res)
+
+
+# Current method:
+    # Create data set of all numbers that don't have repeat digits, since we know that'll def be out
+    # Loop through data set twice, with no repeat multiplications, testing for pandigital
+    # Sum unique products
+
+# POSSIBILITIES
+# Changing upper cap from 987654321 to #/2
+    # start with 8? 9 is notoriously bad at causing repeats..
+    # cap = 897654321.....? dunno.
+    # so confused...I chose 987654321 as the largest pandigital, anything larger will never be part of our data set
+        # very true, but 9 being the lead bit of a product will not work well. 
+        # heck, 9 being involved at all will not work well. Move it as close to the back as possible
+    # oh I see...although...is it proven that anything starting with 9 will be messed up?
+        # nope. :D just a hunch. yeah, I get that.
+        # I can't do that unless it's proven...in case there's an oddball case
+    # I'm right now thinking about making the upper cap 493827161 
+        # well why divide by two then..? true.
+    # that's what I'm thinking about...since the product has to be less than 987654321, 
+    # anything larger than #/2 multiplied by anything greater than 2 will be wrong....riiiiight?
+    # currently trying to think of a case where ^ is wrong
+        # I don't think that's what the problem's asking though . . . 
+        # like it's saying the product will be the last few digits. say 98 * 76 == 54321
+# like, I can't predict the largest product that will follow that rule, but 987654321 is the largest pandigital
+# so I already know I don't want to go above that, or else it's impossible
+# 2 * 493827161 = 987654321, so even though that doesn't follow the rule
+# I know it's impossible for anything greater than 493827161 to be part of the multiplier/mulitiplicand
+# Just making sure there's stuff I don't need to check since I'm brute forcing stuff
+    # ? ummmm....
+
+
+# OTHER IDEA
+# Loop one: start at two, work up to 99? (determine upper cap later)
+    # move on if number repeats itself
+# Loop two: 
+# start @1, work up to whatever is the max that creates a # 9 - (first #'s length) - (second #'s length) long
+    # move on if number repeats with other digits
+# Check: find product, check if has repeating digits
+
+# numbers and their parts
+# 1: 1      2: 2    3: 3    4: 2 2      5: 5    6: 2 3      7: 7    8: 2 2 2    9: 3 3
+
+# RULES: (grasping at straws really. could speed things up eventually though)
+    # ending in 1:  3*7 (-1*1-, -9*9-)
+    # ending in 2:  3*4, 4*8, 6*7, 8*9 (-1*2-, -2*6-)
+    # ending in 3:  7*9 (-1*3-)
+    # ending in 4:  2*7, 3*8, 6*9 (-1*4-, -2*2-, -4*6-)
+    # ending in 5:  none of the three numbers can END in five. 5 must be in one of first eight spots.
+    # ending in 6:  2*3, 8*2, 9*4, 7*8 (-1*6-, -4*4-)
+    # ending in 7:  3*9 (-1*7-)
+    # ending in 8:  2*4, 2*9 , 3*6, 4*7 (1,6 *8)
+    # ending in 9:  (-1*9-, -3*3- -7*7-) the last number cannot END in five. Must be one of first eight spots.
+    # account for evens/odds
+
+# ohhh I see...although it'll be interesting coding everything
+    # yeaaaaah... won't make a HUGE difference unless we find some substantial rules. 
+    # how much faster do you need to be?
+# changing the upper cap halves my time, which is great, but I'd say it takes over 8hrs right now
+# awful, right?
+    # turrible. OK. So what you can do is take these rules and apply them to the for loops BEFORE doing multiplication,
+    #which takes quite a while. So basically: can this combination produce a unique last digit? 
+    # Yes? Try it out then. No? Move on.
+    
+    
+#I know you said to make two ongoing loops, but that would require breaking apart my pretty list comprehension
+    # the res = [] part is so pretty XD
+# I guess that's my next test
+
+# NEW VERSION
+
+def repeatNum(s):
+    d = list(str(s))
+    for i in d:
+        if '0' in d: return False
+        if d.count(i)>1: return False
+    return True
+    
+def countR(f1, f2, f3):
+    d2 = list(str(f1)+str(f2)+str(f3))
+    if len(d2)!=9: return False
+    d2 = map(int,d2)
+    for i2 in range(1,10):
+        if d2.count(0)!=0 : return False
+        if d2.count(i2)!=1 : return False
+    return True
+
+pancakes1 = []  
+n = 2
+while n<=31427: #sqrt(987654321) round up
+    if repeatNum(n): pancakes1.append(n)
+    n+=1
+pancakes2 = pancakes1[:]
+while n<=493827161: #987654321/2 round up
+    if repeatNum(n): pancakes2.append(n)
+    n+=1
+    print pancakes2[-1]
+
+res = []        
+res = [a*b for a in pancakes1 for b in pancakes2 if (b>a and (countR(a,b,a*b)) and (a*b not in res))]
+print 'Sum: ', sum(res)
